@@ -1,0 +1,22 @@
+# Codex-only metadata for the `headshot` skill.
+#
+# This file is OPTIONAL and is read only by OpenAI Codex. The skill is fully
+# defined by ../SKILL.md and works in Codex (and Claude, and every other
+# Agent Skills tool) without it. Claude and other tools simply ignore this file.
+# It exists only to give Codex a nicer display + an explicit-invocation default.
+#
+# Spec: https://developers.openai.com/codex/skills
+
+interface:
+  display_name: "Headshot — one-shot prompt compiler"
+  short_description: "Turn a rough, messy, or dictated brief into a complete, balanced, one-shot project prompt."
+  brand_color: "#34D399"
+  # Inserted when the skill is invoked explicitly (e.g. `$headshot` or via /skills).
+  default_prompt: "Compile the brief I provide into a complete, balanced, eight-section one-shot prompt. First ask me up to 5 clarifying questions about anything load-bearing that is ambiguous; do not guess. Then emit the optimized prompt."
+
+policy:
+  # Let Codex auto-trigger this skill when a task matches the description (the default).
+  allow_implicit_invocation: true
+
+# No tool/MCP dependencies — headshot is a pure prompt compiler that needs no
+# external tools to run.
