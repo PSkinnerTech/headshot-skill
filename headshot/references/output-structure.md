@@ -72,15 +72,42 @@ How the agent must **self-check before declaring done**: run it, test it, *view 
 deliverable(s) — file names, formats, paths — and how to **demonstrate it works** (e.g. a smoke test,
 a deployed URL, a screenshot, a passing suite). Be unambiguous so there's nothing to interpret.
 
-## §8 — Approach & escape hatch
+## §8 — Approach, oversight & escape hatch
 
 Tell the agent to **plan before building**. Authorize scale **only if the project warrants it** —
 subagents / parallelism / a verify→fix→re-verify loop — and say to verify between steps and keep the
-work in a known-good state each iteration; checkpoint/publish progress if it's long-running. Then the
-**standing escape-hatch rule** (verbatim intent): *"You persist, but you are not trapped. Surface to
-the human — ask first, and pause that thread — rather than guessing or grinding, whenever a criterion
-hits the infeasibility plateau, a load-bearing assumption proves wrong, or the requirements are
-genuinely ambiguous. Report with evidence."*
+work in a known-good state each iteration.
+
+### Oversight & steerability — for long autonomous runs, this is the highest-leverage part of the prompt
+
+When the project is a **long autonomous run** (loops or subagents working for a long stretch with the
+human away), the bottleneck is no longer "specify the output well" — it's *"keep a long unsupervised
+run on track."* The human's ability to **observe and steer** the agent becomes the scarce resource,
+so the compiled prompt must hand the agent the machinery to make itself observable. Include all three:
+
+- **Deploy-and-observe.** Don't let the agent grade itself from memory. Tell it to *push, deploy, hit
+  the live URL, tail the logs, and iterate until it actually works* — the running environment is a
+  more honest verifier than the model's self-assessment.
+- **A live, continuously-updated progress surface of the TRUE deliverable.** Have the agent stand up a
+  persistent, deployed artifact (the running app / a status page) and keep it current with timestamped
+  progress, so a human can open one URL from anywhere and judge — and catch drift *early*. Make it
+  publish the **real surface the human judges, not a proxy** (this is law L4: a status page that shows
+  machine scores instead of the actual app hides exactly the bugs you need to see). State that
+  *publishing progress is not stopping* — the agent keeps working between updates.
+- **Verify by inspection, not self-report.** *Open the file, screenshot it, re-run the checks* — force
+  a fresh observation, because self-grading from memory is where agents rubber-stamp broken work.
+
+For a **one-shot** (single generation, no human in the loop during the run), keep this section light —
+there is no long run to observe, so the deploy/progress machinery is overhead. Match the weight of §8
+to the horizon.
+
+### The escape hatch (always include, any horizon)
+
+The **standing escape-hatch rule** (verbatim intent): *"You persist, but you are not trapped. Surface
+to the human — ask first, and pause that thread — rather than guessing or grinding, whenever a
+criterion hits the infeasibility plateau, a load-bearing assumption proves wrong, or the requirements
+are genuinely ambiguous. Report with evidence."* (This is law L6 — and on a long run it is what lets
+the human steer without babysitting.)
 
 ---
 

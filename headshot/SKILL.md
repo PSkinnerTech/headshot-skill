@@ -58,6 +58,11 @@ Do steps 1–4 internally, then emit the prompt in step 5 — unless step 3 forc
    - *Interactive / standard* (typical app code a frontier model handles easily) → keep it balanced;
      spend words on **what to build**, not on emphasis.
 
+   Also note the **horizon**. A *one-shot* (single generation) keeps §8 light. A *long autonomous
+   run* (loops/subagents working for a long stretch with the human away) must carry the §8 **oversight
+   machinery** — because once the agent runs a long way without you, verification and observability
+   become the highest-leverage parts of the whole prompt, not an afterthought.
+
 3. **Gap-scan & resolve.** List: assumed/unstated context, ambiguities, internal conflicts, missing
    acceptance criteria, missing inputs, and the riskiest unknowns. Resolve what you safely can from
    context. **For anything that would materially change the build and that you cannot resolve, STOP
@@ -90,9 +95,13 @@ The detailed spec for each section — what it must contain and the traps it clo
 6. **Aesthetic / domain direction** — the taste spec (creative) or the rigor spec (technical).
 7. **Self-verification & output contract** — how the agent self-checks before finishing (run it, test
    it, view it); the exact deliverable (files/format/paths); how to demonstrate it works.
-8. **Approach & escape hatch** — plan first; use subagents/parallelism/loops only if the project's
-   size warrants it (say when, and verify between steps); checkpoint progress if long-running; and the
-   standing rule: surface blockers and material ambiguities to the human rather than guessing.
+8. **Approach, oversight & escape hatch** — plan first; use subagents/parallelism/loops only if the
+   project's size warrants it (say when, and verify between steps). **For a long autonomous run, carry
+   the oversight machinery** ([details](references/output-structure.md)): *deploy-and-observe* (push →
+   hit the live URL → tail logs → iterate until it really works), a **live, continuously-updated
+   progress surface showing the TRUE deliverable** (not a proxy) so a human can watch and steer, and
+   *verify-by-inspection* (open/screenshot/re-run, never self-report). Plus the standing rule: surface
+   blockers and material ambiguities to the human rather than guessing.
 
 ## Self-check before you emit (revise until all are true)
 
@@ -100,6 +109,7 @@ The detailed spec for each section — what it must contain and the traps it clo
 - [ ] §2 covers the true human-facing surface, not just a proxy/test path. *(L4)*
 - [ ] No absolute or unbounded bar remains anywhere; the infeasibility-exit clause is present. *(L5)*
 - [ ] A human escape hatch appears in both §2 and §8. *(L6)*
+- [ ] If it's a long autonomous run, §8 carries the oversight machinery (deploy-and-observe + a live progress surface of the TRUE deliverable + verify-by-inspection); if one-shot, §8 stays light.
 - [ ] All eight sections are present; none dominates or is skipped. *(L1, L2)*
 - [ ] Every load-bearing ambiguity was resolved or asked — none was silently guessed. *(L8)*
 - [ ] Emphasis is tuned to the project class from step 2, mildly, not extremely. *(L2)*
